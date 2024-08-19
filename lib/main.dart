@@ -1,7 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:micro_chat_app/ui/pages/login_page/bloc/login_bloc.dart';
 import 'package:micro_chat_app/ui/pages/login_page/login_page.dart';
 
 void main() {
@@ -14,9 +14,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ScreenUtilInit(
+    return ScreenUtilInit(
       child: MaterialApp(
-        home: Scaffold(body: LoginPage()),
+        home: Scaffold(
+            body: BlocProvider(
+          create: (context) => LoginBloc(),
+          child: const LoginPage(),
+        )),
       ),
     );
   }
