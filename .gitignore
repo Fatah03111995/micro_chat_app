@@ -41,3 +41,15 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+*.env*
+**.mocks.dart**
+**.g.dart**
+**.freezed.dart**
+**.config.dart**
+**.injectable.dart**
+.vscode/launch.json
+.vscode/settings.json
+.fvm/fvm_config.json
+.fvm/flutter_sdk
+/assets/images/png
