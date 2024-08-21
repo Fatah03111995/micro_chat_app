@@ -8,7 +8,7 @@ class ChatModel extends Equatable {
   final String message;
   final DateTime createdAt;
   final DateTime updatedAt;
-  ChatModel({
+  const ChatModel({
     required this.chatId,
     required this.from,
     required this.to,

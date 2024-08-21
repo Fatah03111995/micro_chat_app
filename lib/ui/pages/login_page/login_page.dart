@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
+import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/repositories/auth_repositories.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
@@ -80,10 +82,11 @@ class LoginPage extends StatelessWidget {
             RoundedRectangleButton(
                 onTap: () {
                   final LoginState loginState = context.read<LoginBloc>().state;
-                  if (loginState.email.isEmpty || loginState.password.isEmpty) {
-                    return;
-                  }
-                  ExpressAuth().logIn(loginState.email, loginState.password);
+                  context.read<AuthBloc>().add(AuthEventLogIn(
+                        authRepositories: ExpressAuth(),
+                        email: loginState.email,
+                        password: loginState.password,
+                      ));
                 },
                 color: MyColors.blue1,
                 child: Text('Login',
