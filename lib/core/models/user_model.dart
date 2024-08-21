@@ -10,19 +10,21 @@ class UserModel extends Equatable {
   final String userName;
   final String email;
   final String password;
-  final String fcm;
-  final File photoProfilePath;
+  final String userToken;
+  final String fcmToken;
+  final String photoProfilePath;
   final bool status;
-  UserModel(
-    this.status, {
+  const UserModel({
     required this.userId,
     required this.firstName,
     required this.lastName,
     required this.userName,
     required this.email,
     required this.password,
-    required this.fcm,
+    required this.userToken,
+    required this.fcmToken,
     required this.photoProfilePath,
+    required this.status,
   });
 
   @override
@@ -33,7 +35,9 @@ class UserModel extends Equatable {
         userName,
         email,
         password,
-        fcm,
-        photoProfilePath
+        userToken,
+        fcmToken,
+        photoProfilePath,
+        status,
       ];
 }
