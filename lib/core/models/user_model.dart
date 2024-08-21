@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
-class UserModel {
+import 'package:equatable/equatable.dart';
+
+class UserModel extends Equatable {
   final String? userId;
   final String firstName;
   final String lastName;
@@ -22,4 +24,16 @@ class UserModel {
     required this.fcm,
     required this.photoProfilePath,
   });
+
+  @override
+  List<Object?> get props => [
+        userId,
+        firstName,
+        lastName,
+        userName,
+        email,
+        password,
+        fcm,
+        photoProfilePath
+      ];
 }
