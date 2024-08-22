@@ -46,6 +46,7 @@ class AuthDataProvider {
     request.fields["fcmToken"] = fcmToken;
 
     final response = await request.send();
+    print(response.toString());
     return response;
   }
 }

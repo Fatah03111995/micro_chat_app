@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:micro_chat_app/core/data_provider/auth_data_provider.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
@@ -162,8 +163,15 @@ class RegisterPage extends StatelessWidget {
                 onTap: () {
                   final RegisterState registerState =
                       context.read<RegisterBloc>().state;
-
-                  print(registerState);
+                  AuthDataProvider.register(
+                    firstName: registerState.firstName,
+                    lastName: registerState.lastName,
+                    userName: registerState.username,
+                    email: registerState.email,
+                    password: registerState.password,
+                    fcmToken: '',
+                    photoProfilePath: registerState.photoProfilePath!,
+                  );
                 },
                 color: MyColors.blue1,
                 child: Text('Register',

@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:micro_chat_app/core/repositories/auth_repositories.dart';
-
 class RegisterEvent {
   const RegisterEvent();
 }
@@ -51,8 +49,3 @@ class RegisterPhotoProfileEvent extends RegisterEvent {
 class RegisterToggleVisiblePasswordEvent extends RegisterEvent {}
 
 class RegisterToggleVisibleConfirmPasswordEvent extends RegisterEvent {}
-
-class RegisterSendEvent extends RegisterEvent {
-  final AuthRepositories authRepositories;
-  const RegisterSendEvent({required this.authRepositories});
-}

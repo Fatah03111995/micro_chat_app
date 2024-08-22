@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:micro_chat_app/core/exception/auth_exception.dart';
-import 'package:micro_chat_app/core/util/util_component.dart';
 import 'package:micro_chat_app/ui/pages/register_page/bloc/register_event.dart';
 import 'package:micro_chat_app/ui/pages/register_page/bloc/register_state.dart';
 
@@ -20,7 +18,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         _onRegisterToggleVisiblePasswordHandler);
     on<RegisterToggleVisibleConfirmPasswordEvent>(
         _onRegisterToggleVisibleConfirmPasswordHandler);
-    on<RegisterSendEvent>(_onRegisterSendHandler);
   }
 
   _onFirstNameEventHandler(RegisterFirstNameEvent event, Emitter emit) {
@@ -75,14 +72,5 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       RegisterToggleVisibleConfirmPasswordEvent event, Emitter emit) {
     emit(state.copyWith(
         isConfirmPassNotVisible: !state.isConfirmPassNotVisible));
-  }
-
-  _onRegisterSendHandler(RegisterSendEvent event, Emitter emit) async {
-    final authRepositories = event.authRepositories;
-    try {
-      await authRepositories.register();
-    } on AuthException catch (e) {
-      UtilComponent.toastErr(e.message);
-    }
   }
 }

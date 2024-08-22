@@ -29,8 +29,8 @@ class MainApp extends StatelessWidget {
         child: MaterialApp(
           home: Scaffold(
               body: BlocProvider(
-            create: (context) => LoginBloc(),
-            child: const LoginPage(),
+            create: (context) => RegisterBloc(),
+            child: const RegisterPage(),
           )),
         ),
       ),
