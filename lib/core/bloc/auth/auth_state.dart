@@ -21,6 +21,11 @@ class AuthStateFailed extends AuthState {
   List<Object?> get props => [];
 }
 
+class AuthStateRegisterSuccess extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+
 class AuthStateSuccess extends AuthState {
   final UserModel user;
   const AuthStateSuccess({required this.user});

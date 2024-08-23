@@ -21,7 +21,7 @@ class AuthDataProvider {
     return response;
   }
 
-  static Future<http.StreamedResponse> register({
+  static Future<http.Response> register({
     required String firstName,
     required String lastName,
     required String userName,
@@ -45,8 +45,8 @@ class AuthDataProvider {
     request.fields["password"] = password;
     request.fields["fcmToken"] = fcmToken;
 
-    final response = await request.send();
-    print(response.toString());
+    final streamResponse = await request.send();
+    final response = await http.Response.fromStream(streamResponse);
     return response;
   }
 }

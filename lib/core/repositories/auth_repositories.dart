@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:micro_chat_app/core/data_provider/auth_data_provider.dart';
 import 'package:micro_chat_app/core/exception/auth_exception.dart';
@@ -6,15 +7,45 @@ import 'package:micro_chat_app/core/models/user_model.dart';
 
 abstract class AuthRepositories {
   Future<UserModel> logIn(String email, String password);
-  Future<UserModel> register();
-  void logOut();
+  Future<void> register({
+    required String firstName,
+    required String lastName,
+    required String userName,
+    required String email,
+    required String password,
+    required String fcmToken,
+    required File photoProfilePath,
+  });
 }
 
 class ExpressAuth implements AuthRepositories {
   @override
-  Future<UserModel> register() {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<Map<String, dynamic>?> register({
+    required String firstName,
+    required String lastName,
+    required String userName,
+    required String email,
+    required String password,
+    required String fcmToken,
+    required File photoProfilePath,
+  }) async {
+    final response = await AuthDataProvider.register(
+      firstName: firstName,
+      lastName: lastName,
+      userName: userName,
+      email: email,
+      password: password,
+      fcmToken: fcmToken,
+      photoProfilePath: photoProfilePath,
+    );
+
+    final Map<String, dynamic> body = jsonDecode(response.body);
+
+    if (response.statusCode != 200) {
+      throw AuthException(message: body["message"]);
+    }
+
+    return body;
   }
 
   @override
@@ -42,10 +73,5 @@ class ExpressAuth implements AuthRepositories {
       status: bodyUser['status'],
     );
     return user;
-  }
-
-  @override
-  void logOut() {
-    // TODO: implement signOut
   }
 }

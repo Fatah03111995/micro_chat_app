@@ -12,7 +12,7 @@ class AuthException implements Exception {
         return 'email is not registered yet';
 
       case 'email-already-used':
-        return 'email-already-used';
+        return 'email already used';
 
       case 'username-already-used':
         return 'username already used';
