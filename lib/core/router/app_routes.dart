@@ -28,7 +28,7 @@ class AppRoutes {
           ),
         ),
         PageEntity(
-          path: PagePath.login,
+          path: PagePath.dashboard,
           page: const DashboardPage(),
         ),
       ];

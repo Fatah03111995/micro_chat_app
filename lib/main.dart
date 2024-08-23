@@ -9,7 +9,7 @@ import 'package:micro_chat_app/core/router/page_path.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized;
-  // Bloc.observer = AppObserver();
+  Bloc.observer = AppObserver();
   runApp(const MainApp());
 }
 
