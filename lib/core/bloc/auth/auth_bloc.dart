@@ -21,6 +21,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
       final response =
           await authRepositories.logIn(event.email, event.password);
+      UtilComponent.toastSuccess(
+          'Welcome ${response.firstName} ${response.lastName} !');
       emit(AuthStateSuccess(user: response));
     } on AuthException catch (e) {
       UtilComponent.toastErr(e.toString());
@@ -59,6 +61,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         fcmToken: '',
         photoProfilePath: event.photoProfilePath!,
       );
+      UtilComponent.toastSuccess('Registration Success, Please Login');
       emit(AuthStateRegisterSuccess());
     } on AuthException catch (e) {
       UtilComponent.toastErr(e.toString());

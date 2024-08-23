@@ -8,8 +8,10 @@ import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
 import 'package:micro_chat_app/core/repositories/auth_repositories.dart';
+import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
+import 'package:micro_chat_app/core/util/util_component.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
 import 'package:micro_chat_app/ui/pages/register_page/bloc/register_bloc.dart';
 import 'package:micro_chat_app/ui/pages/register_page/bloc/register_event.dart';
@@ -165,8 +167,10 @@ class RegisterPage extends StatelessWidget {
 
               SizedBox(height: 30.h),
               BlocListener<AuthBloc, AuthState>(
-                listener: (context, state) {
-                  // TODO: implement listener
+                listener: (context, authState) {
+                  if (authState is AuthStateRegisterSuccess) {
+                    Navigator.pushNamed(context, PagePath.login);
+                  }
                 },
                 child: RoundedRectangleButton(
                     onTap: () {
@@ -184,8 +188,18 @@ class RegisterPage extends StatelessWidget {
                           fcmToken: ''));
                     },
                     color: MyColors.blue1,
-                    child: Text('Register',
-                        style: TextStyles.sm.copyWith(color: Colors.white))),
+                    child: BlocSelector<AuthBloc, AuthState, AuthState>(
+                      selector: (state) {
+                        return state;
+                      },
+                      builder: (context, state) {
+                        return state is AuthStateLoading
+                            ? const CircularProgressIndicator()
+                            : Text('Register',
+                                style: TextStyles.sm
+                                    .copyWith(color: Colors.white));
+                      },
+                    )),
               ),
             ],
           ),

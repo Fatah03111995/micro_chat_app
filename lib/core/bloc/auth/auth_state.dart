@@ -31,7 +31,4 @@ class AuthStateSuccess extends AuthState {
   const AuthStateSuccess({required this.user});
   @override
   List<Object?> get props => [user];
-
-  @override
-  String toString() => 'UserStateDone(user: $user)';
 }

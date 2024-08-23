@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
+import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
 import 'package:micro_chat_app/core/repositories/auth_repositories.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
@@ -81,19 +82,36 @@ class LoginPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 30.h),
-              RoundedRectangleButton(
-                  onTap: () {
-                    final LoginState loginState =
-                        context.read<LoginBloc>().state;
-                    context.read<AuthBloc>().add(AuthEventLogIn(
-                          authRepositories: ExpressAuth(),
-                          email: loginState.email,
-                          password: loginState.password,
-                        ));
-                  },
-                  color: MyColors.blue1,
-                  child: Text('Login',
-                      style: TextStyles.sm.copyWith(color: Colors.white))),
+              BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthStateSuccess) {
+                    Navigator.pushReplacementNamed(context, PagePath.dashboard);
+                  }
+                },
+                child: RoundedRectangleButton(
+                    onTap: () {
+                      final LoginState loginState =
+                          context.read<LoginBloc>().state;
+                      context.read<AuthBloc>().add(AuthEventLogIn(
+                            authRepositories: ExpressAuth(),
+                            email: loginState.email,
+                            password: loginState.password,
+                          ));
+                    },
+                    color: MyColors.blue1,
+                    child: BlocSelector<AuthBloc, AuthState, AuthState>(
+                      selector: (state) {
+                        return state;
+                      },
+                      builder: (context, state) {
+                        return state is AuthStateLoading
+                            ? const CircularProgressIndicator()
+                            : Text('Login',
+                                style: TextStyles.sm
+                                    .copyWith(color: Colors.white));
+                      },
+                    )),
+              ),
               SizedBox(height: 20.h),
               RoundedRectangleButton(
                   onTap: () {
