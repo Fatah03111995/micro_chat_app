@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
-import 'package:micro_chat_app/core/models/dummyData.dart';
+import 'package:micro_chat_app/core/models/dummy_data.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
 import 'package:micro_chat_app/ui/pages/chat_page/widget/chat_bubble.dart';

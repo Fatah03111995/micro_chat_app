@@ -5,6 +5,8 @@ import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
+import 'package:micro_chat_app/core/themes/my_colors.dart';
+import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_bloc.dart';
 import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_state.dart';
 import 'package:micro_chat_app/ui/pages/dashboard_page/widget/dashboard_bottom_navigation.dart';
@@ -23,6 +25,10 @@ class DashboardPage extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
+            title: Text(
+              'Micro Chat',
+              style: TextStyles.mlBold.copyWith(color: MyColors.blue1),
+            ),
             actions: [
               IconButton(
                   onPressed: () {
@@ -32,13 +38,16 @@ class DashboardPage extends StatelessWidget {
             ],
           ),
           body: Center(
-            child: BlocSelector<DashboardBloc, DashboardState, int>(
-              selector: (state) {
-                return state.indexPage;
-              },
-              builder: (context, indexPage) {
-                return AppRoutes.getDashboardPage(indexPage).page;
-              },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+              child: BlocSelector<DashboardBloc, DashboardState, int>(
+                selector: (state) {
+                  return state.indexPage;
+                },
+                builder: (context, indexPage) {
+                  return AppRoutes.getDashboardPage(indexPage).page;
+                },
+              ),
             ),
           ),
           bottomNavigationBar: const DashboardBottomNavigator()),
