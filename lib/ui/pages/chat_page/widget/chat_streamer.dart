@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
+import 'package:micro_chat_app/core/models/dummyData.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
 import 'package:micro_chat_app/ui/pages/chat_page/widget/chat_bubble.dart';
@@ -11,29 +12,7 @@ class ChatStreamer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<ChatModel> chats = [
-      ChatModel(
-          chatId: 'a1111',
-          from: 'fatah',
-          to: 'ahmad',
-          message: 'halooo',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now()),
-      ChatModel(
-          chatId: 'a1111',
-          from: 'fatah',
-          to: 'ahmad',
-          message: 'halooo',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now()),
-      ChatModel(
-          chatId: 'a1111',
-          from: 'fatah',
-          to: 'ahmad',
-          message: 'halooo',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now()),
-    ];
+    List<ChatModel> chats = Dummydata.chats;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
