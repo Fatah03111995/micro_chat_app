@@ -7,7 +7,6 @@ class UserModel extends Equatable {
   final String lastName;
   final String userName;
   final String email;
-  final String password;
   final String userToken;
   final String fcmToken;
   final String photoProfilePath;
@@ -18,7 +17,6 @@ class UserModel extends Equatable {
     required this.lastName,
     required this.userName,
     required this.email,
-    required this.password,
     required this.userToken,
     required this.fcmToken,
     required this.photoProfilePath,
@@ -32,7 +30,6 @@ class UserModel extends Equatable {
         lastName,
         userName,
         email,
-        password,
         userToken,
         fcmToken,
         photoProfilePath,

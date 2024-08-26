@@ -1,5 +1,6 @@
 import 'package:micro_chat_app/core/models/channel_model.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
+import 'package:micro_chat_app/core/models/user_model.dart';
 
 class Dummydata {
   static List<ChatModel> get chats => [
@@ -39,5 +40,18 @@ class Dummydata {
           lastMassage: 'goo to gym',
           lastTimeMessage: DateTime.now(),
         )
+      ];
+
+  static List<UserModel> get friends => [
+        const UserModel(
+            userId: 'userId',
+            firstName: 'ahmad',
+            lastName: 'fatihin',
+            userName: 'cool_person',
+            email: '',
+            userToken: '',
+            fcmToken: '',
+            photoProfilePath: '',
+            status: false)
       ];
 }
