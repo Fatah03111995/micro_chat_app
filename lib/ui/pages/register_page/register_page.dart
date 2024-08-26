@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:micro_chat_app/core/repositories/auth_repositories.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
-import 'package:micro_chat_app/core/util/util_component.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
 import 'package:micro_chat_app/ui/pages/register_page/bloc/register_bloc.dart';
 import 'package:micro_chat_app/ui/pages/register_page/bloc/register_event.dart';

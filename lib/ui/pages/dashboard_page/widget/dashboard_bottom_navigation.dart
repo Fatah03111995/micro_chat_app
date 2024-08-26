@@ -5,8 +5,9 @@ import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_entity.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
-import 'package:micro_chat_app/ui/pages/dashboard_page/cubit/dashboard_cubit.dart';
-import 'package:micro_chat_app/ui/pages/dashboard_page/cubit/dashboard_state.dart';
+import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_bloc.dart';
+import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_event.dart';
+import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_state.dart';
 
 class DashboardBottomNavigator extends StatelessWidget {
   const DashboardBottomNavigator({
@@ -26,7 +27,7 @@ class DashboardBottomNavigator extends StatelessWidget {
             right: Radius.circular(30),
           ),
         ),
-        child: BlocSelector<DashboardCubit, DashboardState, int>(
+        child: BlocSelector<DashboardBloc, DashboardState, int>(
           selector: (state) {
             return state.indexPage;
           },
@@ -39,7 +40,9 @@ class DashboardBottomNavigator extends StatelessWidget {
                 PageEntity page = AppRoutes.dashboardPageEntities[index];
                 return GestureDetector(
                   onTap: () {
-                    context.read<DashboardCubit>().changeIndex(index);
+                    context
+                        .read<DashboardBloc>()
+                        .add(ChangeIndex(newIndex: index));
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 500),

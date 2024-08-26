@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:micro_chat_app/core/router/page_entity.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/ui/pages/chat_page/chat_page.dart';
-import 'package:micro_chat_app/ui/pages/dashboard_page/cubit/dashboard_cubit.dart';
 import 'package:micro_chat_app/ui/pages/dashboard_page/dashboard_page.dart';
 import 'package:micro_chat_app/ui/pages/friends_page/friends_page.dart';
 import 'package:micro_chat_app/ui/pages/login_page/bloc/login_bloc.dart';
@@ -30,10 +29,7 @@ class AppRoutes {
         ),
         PageEntity(
           path: PagePath.dashboard,
-          page: BlocProvider(
-            create: (context) => DashboardCubit(),
-            child: const DashboardPage(),
-          ),
+          page: const DashboardPage(),
         ),
       ];
 
@@ -67,7 +63,6 @@ class AppRoutes {
   static Route onGenerateRoute(RouteSettings setting) {
     List<PageEntity> page = getPageEntity(setting.name ?? '');
     List<PageEntity> defaultPage = getPageEntity(PagePath.login);
-
     if (page.isNotEmpty) {
       return MaterialPageRoute(builder: (context) => page.first.page);
     }

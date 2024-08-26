@@ -6,8 +6,7 @@ import 'package:micro_chat_app/app_observer.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
-import 'package:micro_chat_app/ui/pages/dashboard_page/cubit/dashboard_cubit.dart';
-import 'package:micro_chat_app/ui/pages/dashboard_page/dashboard_page.dart';
+import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized;
@@ -22,23 +21,21 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-
     return ScreenUtilInit(
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => AuthBloc(),
-          )
+          ),
+          BlocProvider(
+            create: (context) => DashboardBloc(),
+          ),
         ],
         child: MaterialApp(
           theme: ThemeData.light(),
           debugShowCheckedModeBanner: false,
-          home: BlocProvider(
-            create: (context) => DashboardCubit(),
-            child: const DashboardPage(),
-          ),
-          // initialRoute: PagePath.login,
-          // onGenerateRoute: AppRoutes.onGenerateRoute,
+          initialRoute: PagePath.login,
+          onGenerateRoute: AppRoutes.onGenerateRoute,
         ),
       ),
     );
