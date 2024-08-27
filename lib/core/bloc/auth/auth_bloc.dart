@@ -24,8 +24,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final response =
           await authRepositories.logIn(event.email, event.password);
       final socket = io.io(Env.baseEndpoint, <String, dynamic>{
-        'transports': ['websocket']
+        'transports': ['websocket'],
+        'query': {'userId': response.userId},
       });
+      // socket.on('getOnlineUsers', (data) {
+      //   print('work on getOnlineUsers');
+      //   print(data);
+      // });
       UtilComponent.toastSuccess(
           'Welcome ${response.firstName} ${response.lastName} !');
       emit(AuthStateSuccess(user: response, socket: socket));

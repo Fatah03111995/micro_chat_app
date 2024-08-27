@@ -16,6 +16,14 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthState authState = context.read<AuthBloc>().state;
+    if (authState is AuthStateSuccess) {
+      //---------GET ONLINE USER
+      authState.socket.on('getOnlineUsers', (data) {
+        print('work on getOnlineUsers');
+      });
+    }
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state.runtimeType != AuthStateSuccess) {
