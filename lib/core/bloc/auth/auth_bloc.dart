@@ -27,10 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'transports': ['websocket'],
         'query': {'userId': response.userId},
       });
-      // socket.on('getOnlineUsers', (data) {
-      //   print('work on getOnlineUsers');
-      //   print(data);
-      // });
+
       UtilComponent.toastSuccess(
           'Welcome ${response.firstName} ${response.lastName} !');
       emit(AuthStateSuccess(user: response, socket: socket));
@@ -39,6 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthStateFailed());
     } catch (e) {
       UtilComponent.toastErr(e.toString());
+      print(e);
       emit(AuthStateFailed());
     }
   }

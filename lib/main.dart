@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/app_observer.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
+import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_bloc.dart';
@@ -30,6 +31,9 @@ class MainApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => DashboardBloc(),
+          ),
+          BlocProvider(
+            create: (context) => UserCubit(),
           ),
         ],
         child: MaterialApp(

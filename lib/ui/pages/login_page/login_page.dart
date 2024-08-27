@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
+import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 import 'package:micro_chat_app/core/repositories/auth_repositories.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
@@ -85,6 +86,7 @@ class LoginPage extends StatelessWidget {
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is AuthStateSuccess) {
+                    context.read<UserCubit>().changeData(state.user);
                     Navigator.pushReplacementNamed(context, PagePath.dashboard);
                   }
                 },

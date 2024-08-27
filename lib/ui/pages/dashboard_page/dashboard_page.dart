@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
+import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
+import 'package:micro_chat_app/core/models/user_model.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
@@ -20,7 +22,15 @@ class DashboardPage extends StatelessWidget {
     if (authState is AuthStateSuccess) {
       //---------GET ONLINE USER
       authState.socket.on('getOnlineUsers', (data) {
-        print('work on getOnlineUsers');
+        final List<dynamic> fromServer = data;
+        if (fromServer.isNotEmpty) {
+          final List<String> onlineUsers =
+              fromServer.map((el) => el.toString()).toList();
+          UserModel user = context.read<UserCubit>().state.user!;
+          context
+              .read<UserCubit>()
+              .changeData(user.copyWith(onlineUsers: onlineUsers));
+        }
       });
     }
 
@@ -45,6 +55,7 @@ class DashboardPage extends StatelessWidget {
                       authState.socket.disconnect();
                     }
                     context.read<AuthBloc>().add(AuthEventLogOut());
+                    context.read<UserCubit>().changeData(null);
                   },
                   icon: const Icon(Icons.logout))
             ],
