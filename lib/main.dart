@@ -9,7 +9,8 @@ import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_bloc.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized;
+  WidgetsFlutterBinding.ensureInitialized();
+
   Bloc.observer = AppObserver();
   runApp(const MainApp());
 }

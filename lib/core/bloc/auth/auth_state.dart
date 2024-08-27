@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:micro_chat_app/core/models/user_model.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -28,7 +29,8 @@ class AuthStateRegisterSuccess extends AuthState {
 
 class AuthStateSuccess extends AuthState {
   final UserModel user;
-  const AuthStateSuccess({required this.user});
+  final io.Socket socket;
+  const AuthStateSuccess({required this.user, required this.socket});
   @override
   List<Object?> get props => [user];
 }

@@ -32,6 +32,10 @@ class DashboardPage extends StatelessWidget {
             actions: [
               IconButton(
                   onPressed: () {
+                    AuthState authState = context.read<AuthBloc>().state;
+                    if (authState is AuthStateSuccess) {
+                      authState.socket.disconnect();
+                    }
                     context.read<AuthBloc>().add(AuthEventLogOut());
                   },
                   icon: const Icon(Icons.logout))

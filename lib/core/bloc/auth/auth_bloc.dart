@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
+import 'package:micro_chat_app/core/env/env.dart';
 import 'package:micro_chat_app/core/exception/auth_exception.dart';
 import 'package:micro_chat_app/core/util/util_component.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthStateInitial()) {
@@ -21,9 +23,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
       final response =
           await authRepositories.logIn(event.email, event.password);
+      final socket = io.io(Env.baseEndpoint, <String, dynamic>{
+        'transports': ['websocket']
+      });
       UtilComponent.toastSuccess(
           'Welcome ${response.firstName} ${response.lastName} !');
-      emit(AuthStateSuccess(user: response));
+      emit(AuthStateSuccess(user: response, socket: socket));
     } on AuthException catch (e) {
       UtilComponent.toastErr(e.toString());
       emit(AuthStateFailed());
