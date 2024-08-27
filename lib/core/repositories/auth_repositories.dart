@@ -60,6 +60,11 @@ class ExpressAuth implements AuthRepositories {
 
     final Map<String, dynamic> bodyUser = body['user'];
     final String bodyToken = body['token'];
+    final List<dynamic> friends = bodyUser['listFriend'];
+    List<String> userFriends = [];
+    if (friends.isNotEmpty) {
+      userFriends = friends.map((el) => el.toString()).toList();
+    }
     final UserModel user = UserModel(
       userId: bodyUser['_id'],
       firstName: bodyUser['firstName'],
@@ -69,7 +74,7 @@ class ExpressAuth implements AuthRepositories {
       userToken: bodyToken,
       fcmToken: bodyUser['fcmToken'],
       photoProfilePath: bodyUser['photoProfilePath'],
-      status: bodyUser['status'],
+      friends: userFriends,
     );
     return user;
   }
