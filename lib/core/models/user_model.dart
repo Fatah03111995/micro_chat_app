@@ -11,7 +11,6 @@ class UserModel extends Equatable {
   final String fcmToken;
   final String photoProfilePath;
   final List<String> friends;
-  final List<String> onlineUsers;
   const UserModel({
     required this.userId,
     required this.firstName,
@@ -22,7 +21,6 @@ class UserModel extends Equatable {
     required this.fcmToken,
     required this.photoProfilePath,
     this.friends = const [],
-    this.onlineUsers = const [],
   });
 
   @override
@@ -36,7 +34,6 @@ class UserModel extends Equatable {
         fcmToken,
         photoProfilePath,
         friends,
-        onlineUsers,
       ];
 
   UserModel copyWith({
@@ -49,7 +46,6 @@ class UserModel extends Equatable {
     String? fcmToken,
     String? photoProfilePath,
     List<String>? friends,
-    List<String>? onlineUsers,
   }) {
     return UserModel(
       userId: userId ?? this.userId,
@@ -61,7 +57,6 @@ class UserModel extends Equatable {
       fcmToken: fcmToken ?? this.fcmToken,
       photoProfilePath: photoProfilePath ?? this.photoProfilePath,
       friends: friends ?? this.friends,
-      onlineUsers: onlineUsers ?? this.onlineUsers,
     );
   }
 }
