@@ -4,9 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
+import 'package:micro_chat_app/core/bloc/socket/socket_cubit.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 import 'package:micro_chat_app/core/repositories/auth_repositories.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
+import 'package:micro_chat_app/core/services/socket_services.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
@@ -87,7 +89,9 @@ class LoginPage extends StatelessWidget {
                 listener: (context, state) {
                   if (state is AuthStateSuccess) {
                     context.read<UserCubit>().changeData(state.user);
-                    Navigator.pushReplacementNamed(context, PagePath.dashboard);
+                    context.read<SocketCubit>().connecting(state.user.userId!);
+                    Navigator.pushReplacementNamed(context, PagePath.dashboard,
+                        arguments: {'userId': state.user.userId});
                   }
                 },
                 child: RoundedRectangleButton(

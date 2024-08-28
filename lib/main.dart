@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/app_observer.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
+import 'package:micro_chat_app/core/bloc/socket/socket_cubit.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
@@ -34,6 +35,9 @@ class MainApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => UserCubit(),
+          ),
+          BlocProvider(
+            create: (context) => SocketCubit(),
           ),
         ],
         child: MaterialApp(
