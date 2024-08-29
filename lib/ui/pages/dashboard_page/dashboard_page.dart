@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
-import 'package:micro_chat_app/core/bloc/socket/socket_cubit.dart';
-import 'package:micro_chat_app/core/bloc/socket/socket_state.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 // import 'package:micro_chat_app/core/models/user_model.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
@@ -21,58 +19,51 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SocketState socketState = context.read<SocketCubit>().state;
-    SocketServices? sokcetServices;
+    SocketServices socketServices = SocketServices();
 
-    if (socketState is SocketStateConnected) {
-      sokcetServices = socketState.socketServices;
-    }
-
-    sokcetServices!.getOnlineUsers((data) {
+    socketServices.getOnlineUsers((data) {
+      print(data);
+    });
+    socketServices.getNewChat((data) {
       print(data);
     });
 
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state.runtimeType != AuthStateSuccess) {
-          Navigator.pushReplacementNamed(context, PagePath.login);
-        }
-      },
-      child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Text(
-              'Micro Chat',
-              style: TextStyles.mlBold.copyWith(color: MyColors.blue1),
-            ),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    AuthState authState = context.read<AuthBloc>().state;
-                    if (authState is AuthStateSuccess) {
-                      authState.socket.disconnect();
-                    }
-                    context.read<AuthBloc>().add(AuthEventLogOut());
-                    context.read<UserCubit>().changeData(null);
-                    context.read<SocketCubit>().close();
-                  },
-                  icon: const Icon(Icons.logout))
-            ],
+    return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Micro Chat',
+            style: TextStyles.mlBold.copyWith(color: MyColors.blue1),
           ),
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-              child: BlocSelector<DashboardBloc, DashboardState, int>(
-                selector: (state) {
-                  return state.indexPage;
+          actions: [
+            IconButton(
+                onPressed: () {
+                  AuthState authState = context.read<AuthBloc>().state;
+                  if (authState is AuthStateSuccess) {
+                    authState.socket.disconnect();
+                  }
+                  context.read<AuthBloc>().add(AuthEventLogOut());
+                  context.read<UserCubit>().changeData(null);
+                  socketServices.disconnect();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, PagePath.login, (route) => false);
                 },
-                builder: (context, indexPage) {
-                  return AppRoutes.getDashboardPage(indexPage).page;
-                },
-              ),
+                icon: const Icon(Icons.logout))
+          ],
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            child: BlocSelector<DashboardBloc, DashboardState, int>(
+              selector: (state) {
+                return state.indexPage;
+              },
+              builder: (context, indexPage) {
+                return AppRoutes.getDashboardPage(indexPage).page;
+              },
             ),
           ),
-          bottomNavigationBar: const DashboardBottomNavigator()),
-    );
+        ),
+        bottomNavigationBar: const DashboardBottomNavigator());
   }
 }
