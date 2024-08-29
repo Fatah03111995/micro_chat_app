@@ -4,16 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/app_observer.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
-import 'package:micro_chat_app/core/bloc/socket/socket_cubit.dart';
+import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
+import 'package:micro_chat_app/core/services/socket_services.dart';
 import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  Bloc.observer = AppObserver();
+  SocketServices();
+  // Bloc.observer = AppObserver();
   runApp(const MainApp());
 }
 
@@ -37,7 +38,7 @@ class MainApp extends StatelessWidget {
             create: (context) => UserCubit(),
           ),
           BlocProvider(
-            create: (context) => SocketCubit(),
+            create: (context) => ChatBloc(),
           ),
         ],
         child: MaterialApp(
