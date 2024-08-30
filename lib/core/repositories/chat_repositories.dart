@@ -17,7 +17,9 @@ class ChatRepositories {
       if (response.statusCode != 200) {
         throw body['message'] ?? 'error sending data';
       }
-      final rawData = body as Map<String, dynamic>;
+      print(body);
+      print(body.runtimeType);
+      final rawData = body['newChat'] as Map<String, dynamic>;
       return ChatModel(
         chatId: rawData['_id'],
         from: rawData['from'],

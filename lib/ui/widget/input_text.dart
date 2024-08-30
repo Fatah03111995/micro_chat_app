@@ -10,6 +10,7 @@ class InputText extends StatelessWidget {
   final String? value;
   final bool isNotVisible;
   final Function(String newVal) onChanged;
+  final TextEditingController? controller;
   const InputText({
     super.key,
     this.label,
@@ -19,11 +20,13 @@ class InputText extends StatelessWidget {
     this.suffixIcon,
     this.prefixIcon,
     required this.onChanged,
+    this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       onChanged: onChanged,
       obscureText: isNotVisible,
       style: TextStyles.sm,

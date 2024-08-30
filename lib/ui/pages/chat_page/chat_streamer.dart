@@ -13,9 +13,22 @@ import 'package:micro_chat_app/ui/gen/assets.gen.dart';
 import 'package:micro_chat_app/ui/pages/chat_page/widget/chat_bubble.dart';
 import 'package:micro_chat_app/ui/widget/input_text.dart';
 
-class ChatStreamer extends StatelessWidget {
+class ChatStreamer extends StatefulWidget {
   final String friendId;
   const ChatStreamer({super.key, this.friendId = ''});
+
+  @override
+  State<ChatStreamer> createState() => _ChatStreamerState();
+}
+
+class _ChatStreamerState extends State<ChatStreamer> {
+  final TextEditingController message = TextEditingController();
+
+  @override
+  void dispose() {
+    message.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +57,7 @@ class ChatStreamer extends StatelessWidget {
                         return state.onlineUser;
                       },
                       builder: (context, onlinUser) {
-                        bool isOnline = onlinUser.contains(friendId);
+                        bool isOnline = onlinUser.contains(widget.friendId);
                         return Text(
                           isOnline ? 'Online' : 'Offline',
                           style: TextStyles.s.copyWith(
@@ -92,8 +105,24 @@ class ChatStreamer extends StatelessWidget {
               decoration: const BoxDecoration(color: Colors.white),
               child: InputText(
                 hint: 'your messages...',
+                controller: message,
                 onChanged: (newValue) {},
-                suffixIcon: const Icon(Icons.send),
+                suffixIcon: IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: () async {
+                      String userId =
+                          context.read<UserCubit>().state.user!.userId!;
+                      final response = await ChatRepositories.sendMessage(
+                          from: userId,
+                          to: '66bec3599fb23b7b9e147c9b',
+                          message: message.text);
+                      if (context.mounted) {
+                        context
+                            .read<ChatBloc>()
+                            .add(NewChat(newChat: response));
+                      }
+                      message.clear();
+                    }),
               ),
             )
           ],

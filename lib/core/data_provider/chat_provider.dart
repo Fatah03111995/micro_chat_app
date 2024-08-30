@@ -15,7 +15,8 @@ class ChatProvider {
       'to': to,
       'message': message
     };
-    http.Response response = await http.post(url, body: jsonEncode(data));
+    http.Response response = await http.post(url,
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
     return response;
   }
 
