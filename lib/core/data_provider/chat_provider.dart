@@ -20,8 +20,8 @@ class ChatProvider {
     return response;
   }
 
-  static Future<http.Response> getMessages({required String userId}) async {
-    Uri url = Uri.parse('${Env.baseEndpoint}/chat/$userId');
+  static Future<http.Response> getMessages({required String userEmail}) async {
+    Uri url = Uri.parse('${Env.baseEndpoint}/chat/$userEmail');
     http.Response response = await http.get(url);
     return response;
   }

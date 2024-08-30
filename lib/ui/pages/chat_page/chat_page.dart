@@ -29,7 +29,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    String userId = context.read<UserCubit>().state.user!.userId!;
+    String userEmail = context.read<UserCubit>().state.user!.email;
     List<ChannelModel> channels = Dummydata.channels;
     if (channels.isEmpty) {
       return Center(
@@ -41,7 +41,7 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     return FutureBuilder(
-      future: ChatRepositories.getAllChat(userId: userId),
+      future: ChatRepositories.getAllChat(userEmail: userEmail),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

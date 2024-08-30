@@ -23,6 +23,12 @@ class ChatStreamer extends StatefulWidget {
 
 class _ChatStreamerState extends State<ChatStreamer> {
   final TextEditingController message = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollToBottom() {
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+  }
 
   @override
   void dispose() {
@@ -83,7 +89,10 @@ class _ChatStreamerState extends State<ChatStreamer> {
                   return state.chats;
                 },
                 builder: (context, chats) {
+                  WidgetsBinding.instance
+                      .addPostFrameCallback((_) => _scrollToBottom);
                   return ListView.builder(
+                      controller: _scrollController,
                       itemCount: chats.length,
                       itemBuilder: (context, index) {
                         ChatModel chat = chats[index];
@@ -91,7 +100,7 @@ class _ChatStreamerState extends State<ChatStreamer> {
                           sender: chat.from,
                           text: chat.message,
                           isMe: chat.from ==
-                              context.read<UserCubit>().state.user!.userId,
+                              context.read<UserCubit>().state.user!.email,
                           dateTime: chat.createdAt,
                         );
                       });
@@ -110,11 +119,11 @@ class _ChatStreamerState extends State<ChatStreamer> {
                 suffixIcon: IconButton(
                     icon: const Icon(Icons.send),
                     onPressed: () async {
-                      String userId =
-                          context.read<UserCubit>().state.user!.userId!;
+                      String userEmail =
+                          context.read<UserCubit>().state.user!.email;
                       final response = await ChatRepositories.sendMessage(
-                          from: userId,
-                          to: '66bec3599fb23b7b9e147c9b',
+                          from: userEmail,
+                          to: 'fatihin@gmail.com',
                           message: message.text);
                       if (context.mounted) {
                         context

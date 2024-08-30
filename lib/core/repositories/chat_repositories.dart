@@ -17,8 +17,6 @@ class ChatRepositories {
       if (response.statusCode != 200) {
         throw body['message'] ?? 'error sending data';
       }
-      print(body);
-      print(body.runtimeType);
       final rawData = body['newChat'] as Map<String, dynamic>;
       return ChatModel(
         chatId: rawData['_id'],
@@ -34,9 +32,9 @@ class ChatRepositories {
     throw 'error on sending message';
   }
 
-  static Future<List<ChatModel>> getAllChat({required String userId}) async {
+  static Future<List<ChatModel>> getAllChat({required String userEmail}) async {
     try {
-      final response = await ChatProvider.getMessages(userId: userId);
+      final response = await ChatProvider.getMessages(userEmail: userEmail);
       final body = jsonDecode(response.body);
 
       if (response.statusCode != 200) {
