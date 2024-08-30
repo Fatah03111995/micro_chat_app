@@ -5,6 +5,33 @@ import 'package:micro_chat_app/core/models/chat_model.dart';
 import 'package:micro_chat_app/core/util/util_component.dart';
 
 class ChatRepositories {
+  static Future<ChatModel> sendMessage({
+    required String from,
+    required String to,
+    required String message,
+  }) async {
+    try {
+      final response =
+          await ChatProvider.sendMessage(from: from, to: to, message: message);
+      final body = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        throw body['message'] ?? 'error sending data';
+      }
+      final rawData = body as Map<String, dynamic>;
+      return ChatModel(
+        chatId: rawData['_id'],
+        from: rawData['from'],
+        to: rawData['to'],
+        message: rawData['message'],
+        createdAt: DateTime.parse(rawData['createdAt'] as String),
+        updatedAt: DateTime.parse(rawData['updatedAt'] as String),
+      );
+    } catch (e) {
+      UtilComponent.toastErr(e.toString());
+    }
+    throw 'error on sending message';
+  }
+
   static Future<List<ChatModel>> getAllChat({required String userId}) async {
     try {
       final response = await ChatProvider.getMessages(userId: userId);

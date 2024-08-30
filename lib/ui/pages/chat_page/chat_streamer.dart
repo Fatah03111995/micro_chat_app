@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
+import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_state.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
+import 'package:micro_chat_app/core/repositories/chat_repositories.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
@@ -68,8 +70,6 @@ class ChatStreamer extends StatelessWidget {
                   return state.chats;
                 },
                 builder: (context, chats) {
-                  print('build');
-                  print(chats);
                   return ListView.builder(
                       itemCount: chats.length,
                       itemBuilder: (context, index) {
