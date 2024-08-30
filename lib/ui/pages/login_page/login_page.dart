@@ -4,10 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
+import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
+import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 import 'package:micro_chat_app/core/repositories/auth_repositories.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
-import 'package:micro_chat_app/core/services/socket_services.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
@@ -26,7 +27,7 @@ class LoginPage extends StatelessWidget {
       listener: (context, authState) {
         if (authState is AuthStateSuccess) {
           context.read<UserCubit>().changeData(authState.user);
-          SocketServices().connect(userId: authState.user.userId!);
+          context.read<ChatBloc>().add(Connect(userId: authState.user.userId!));
           Navigator.pushNamedAndRemoveUntil(
               context, PagePath.dashboard, (route) => false);
         }

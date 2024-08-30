@@ -9,7 +9,7 @@ class ChatState extends Equatable {
   const ChatState({this.chats = const [], this.onlineUser = const []});
 
   @override
-  List<Object?> get props => [chats];
+  List<Object?> get props => [onlineUser, chats];
 
   ChatState copyWith({
     List<String>? onlineUser,

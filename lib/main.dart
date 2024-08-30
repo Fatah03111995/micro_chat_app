@@ -14,7 +14,7 @@ import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_bloc.dart'
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SocketServices();
-  // Bloc.observer = AppObserver();
+  Bloc.observer = AppObserver();
   runApp(const MainApp());
 }
 

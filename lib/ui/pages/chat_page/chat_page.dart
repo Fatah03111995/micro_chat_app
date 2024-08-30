@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
+import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_state.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
-import 'package:micro_chat_app/core/data_provider/chat_provider.dart';
 import 'package:micro_chat_app/core/models/channel_model.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
 import 'package:micro_chat_app/core/models/dummy_data.dart';
+import 'package:micro_chat_app/core/repositories/chat_repositories.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
 import 'package:micro_chat_app/ui/pages/chat_page/chat_streamer.dart';
@@ -40,18 +41,21 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     return FutureBuilder(
-      future: ChatProvider.getMessages(userId: userId),
+      future: ChatRepositories.getAllChat(userId: userId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        print(snapshot);
+
+        if (snapshot.hasData) {
+          context.read<ChatBloc>().add(LoadChat(chats: snapshot.data!));
+        }
+
         return BlocSelector<ChatBloc, ChatState, List<ChatModel>>(
           selector: (state) {
             return state.chats;
           },
           builder: (context, listChats) {
-            print(listChats);
             return ListView.builder(
                 itemCount: channels.length,
                 itemBuilder: (context, index) {

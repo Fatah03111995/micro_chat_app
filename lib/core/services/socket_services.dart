@@ -53,16 +53,14 @@ class SocketServices {
 
   void getNewChat(Function(ChatModel) cb) {
     _socket!.on('newChat', (data) {
-      print(data);
-      print(data.runtimeType);
       Map<String, dynamic> chatData = data;
       ChatModel newChat = ChatModel(
         chatId: chatData['_id'],
         from: chatData['from'],
         to: chatData['to'],
         message: chatData['message'],
-        createdAt: chatData['createdAt'],
-        updatedAt: chatData['updatedAt'],
+        createdAt: DateTime.parse(chatData['createdAt'] as String),
+        updatedAt: DateTime.parse(chatData['updatedAt'] as String),
       );
       cb(newChat);
     });

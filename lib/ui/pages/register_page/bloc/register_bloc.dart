@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:micro_chat_app/core/util/util_component.dart';
 import 'package:micro_chat_app/ui/pages/register_page/bloc/register_event.dart';
 import 'package:micro_chat_app/ui/pages/register_page/bloc/register_state.dart';
 
@@ -59,7 +60,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         emit(state.copyWith(photoProfilePath: event.newValue));
       }
     } catch (e) {
-      print(e);
+      UtilComponent.toastErr(e.toString());
     }
   }
 

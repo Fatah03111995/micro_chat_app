@@ -36,7 +36,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthStateFailed());
     } catch (e) {
       UtilComponent.toastErr(e.toString());
-      print(e);
       emit(AuthStateFailed());
     }
   }
