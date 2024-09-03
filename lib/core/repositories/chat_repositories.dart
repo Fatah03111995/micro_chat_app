@@ -17,10 +17,14 @@ class ChatRepositories {
       if (response.statusCode != 200) {
         throw body['message'] ?? 'error sending data';
       }
-      final rawData = body['newChat'] as Map<String, dynamic>;
+      final rawData = body as Map<String, dynamic>;
       return ChatModel(
         chatId: rawData['_id'],
+        fromFullName:
+            '${rawData['senderDetails']['firstName']} ${rawData['senderDetails']['lastName']}',
         from: rawData['from'],
+        toFullName:
+            '${rawData['receiverDetails']['firstName']} ${rawData['receiverDetails']['lastName']}',
         to: rawData['to'],
         message: rawData['message'],
         createdAt: DateTime.parse(rawData['createdAt'] as String),
@@ -48,7 +52,11 @@ class ChatRepositories {
         chats = dataBody.map((el) {
           return ChatModel(
             chatId: el['_id'],
+            fromFullName:
+                '${el['senderDetails']['firstName']} ${el['senderDetails']['lastName']}',
             from: el['from'],
+            toFullName:
+                '${el['receiverDetails']['firstName']} ${el['senderDetails']['lastName']}',
             to: el['to'],
             message: el['message'],
             createdAt: DateTime.parse(el['createdAt'] as String),

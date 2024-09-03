@@ -17,7 +17,7 @@ class UserModel extends Equatable {
     required this.lastName,
     required this.userName,
     required this.email,
-    required this.userToken,
+    this.userToken = '',
     required this.fcmToken,
     required this.photoProfilePath,
     this.friends = const [],

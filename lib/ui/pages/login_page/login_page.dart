@@ -27,7 +27,6 @@ class LoginPage extends StatelessWidget {
       listener: (context, authState) {
         if (authState is AuthStateSuccess) {
           context.read<UserCubit>().changeData(authState.user);
-          context.read<ChatBloc>().add(Connect(userId: authState.user.userId!));
           Navigator.pushNamedAndRemoveUntil(
               context, PagePath.dashboard, (route) => false);
         }

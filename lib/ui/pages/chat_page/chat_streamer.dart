@@ -40,40 +40,35 @@ class _ChatStreamerState extends State<ChatStreamer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        centerTitle: false,
         elevation: 7,
-        title: Column(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
+            CircleAvatar(
+              child: Assets.person.image(),
+            ),
+            SizedBox(width: 10.w),
+            Column(
               children: [
-                CircleAvatar(
-                  child: Assets.person.image(),
+                Text(
+                  'ahmad',
+                  style: TextStyles.sm,
                 ),
-                SizedBox(width: 10.w),
-                Column(
-                  children: [
-                    Text(
-                      'ahmad',
-                      style: TextStyles.sm,
-                    ),
-                    SizedBox(height: 5.h),
-                    BlocSelector<ChatBloc, ChatState, List<String>>(
-                      selector: (state) {
-                        return state.onlineUser;
-                      },
-                      builder: (context, onlinUser) {
-                        bool isOnline = onlinUser.contains(widget.friendId);
-                        return Text(
-                          isOnline ? 'Online' : 'Offline',
-                          style: TextStyles.s.copyWith(
-                              color:
-                                  isOnline ? MyColors.blue1 : Colors.black54),
-                        );
-                      },
-                    )
-                  ],
-                ),
+                SizedBox(height: 5.h),
+                BlocSelector<ChatBloc, ChatState, List<String>>(
+                  selector: (state) {
+                    return state.onlineUser;
+                  },
+                  builder: (context, onlinUser) {
+                    bool isOnline = onlinUser.contains(widget.friendId);
+                    return Text(
+                      isOnline ? 'Online' : 'Offline',
+                      style: TextStyles.s.copyWith(
+                          color: isOnline ? MyColors.blue1 : Colors.black54),
+                    );
+                  },
+                )
               ],
             ),
           ],
@@ -95,9 +90,18 @@ class _ChatStreamerState extends State<ChatStreamer> {
                       controller: _scrollController,
                       itemCount: chats.length,
                       itemBuilder: (context, index) {
+                        int? indexBefore = index == 0 ? null : index - 1;
+                        int? indexAfter =
+                            chats.length - 1 == index ? null : index + 1;
                         ChatModel chat = chats[index];
+
                         return ChatBubble(
-                          sender: chat.from,
+                          beforeIsSameUser: indexBefore == null
+                              ? false
+                              : chat.from == chats[indexBefore].from,
+                          afterIsSameUser: indexAfter == null
+                              ? false
+                              : chat.from == chats[indexAfter].from,
                           text: chat.message,
                           isMe: chat.from ==
                               context.read<UserCubit>().state.user!.email,

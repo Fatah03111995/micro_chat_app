@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
-import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
-// import 'package:micro_chat_app/core/models/user_model.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
@@ -30,10 +28,6 @@ class DashboardPage extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                  AuthState authState = context.read<AuthBloc>().state;
-                  if (authState is AuthStateSuccess) {
-                    authState.socket.disconnect();
-                  }
                   context.read<AuthBloc>().add(AuthEventLogOut());
                   context.read<UserCubit>().changeData(null);
                   context.read<ChatBloc>().add(Disconnect());
