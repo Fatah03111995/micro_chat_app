@@ -4,24 +4,25 @@ import 'package:micro_chat_app/core/env/env.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
-class SocketServices {
+class IOSocketServices {
   io.Socket? _socket;
 
-  static SocketServices? _instance;
+  static IOSocketServices? _instance;
 
-  factory SocketServices() {
-    _instance ??= SocketServices._();
+  factory IOSocketServices() {
+    _instance ??= IOSocketServices._();
     return _instance!;
   }
 
-  SocketServices._();
+  IOSocketServices._();
 
-  void connect({required String userId}) {
+  void connect({required String userEmail}) {
     print('Connecting to socket...');
-    _socket = io.io(Env.baseEndpoint, <String, dynamic>{
-      'transports': ['websocket'],
-      'query': {'userId': userId}
-    });
+    _socket = io.io(
+      Env.baseEndpoint,
+      io.OptionBuilder().setTransports(['websocket']).setQuery(
+          {'userEmail': userEmail}).build(),
+    );
 
     // Pastikan untuk mendengarkan event connect
     _socket!.on('connect', (_) {
@@ -56,7 +57,11 @@ class SocketServices {
       Map<String, dynamic> chatData = data;
       ChatModel newChat = ChatModel(
         chatId: chatData['_id'],
+        fromFullName:
+            '${chatData['senderDetails']['firstName']} ${chatData['senderDetails']['lastName']}',
         from: chatData['from'],
+        toFullName:
+            '${chatData['receiverDetails']['firstName']} ${chatData['senderDetails']['lastName']}',
         to: chatData['to'],
         message: chatData['message'],
         createdAt: DateTime.parse(chatData['createdAt'] as String),

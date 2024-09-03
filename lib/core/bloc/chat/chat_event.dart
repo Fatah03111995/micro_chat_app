@@ -5,9 +5,9 @@ class ChatEvent {
 }
 
 class Connect extends ChatEvent {
-  final String userId;
+  final String userEmail;
 
-  const Connect({required this.userId});
+  const Connect({required this.userEmail});
 }
 
 class Disconnect extends ChatEvent {}
@@ -27,4 +27,9 @@ class LoadChat extends ChatEvent {
 class NewOnlineUsers extends ChatEvent {
   final List<String> newOnline;
   const NewOnlineUsers({required this.newOnline});
+}
+
+class Channeling extends ChatEvent {
+  final String userEmail;
+  const Channeling({required this.userEmail});
 }
