@@ -1,24 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:micro_chat_app/core/models/user_model.dart';
 
 class ChatModel extends Equatable {
   final String chatId;
-  final String fromFullName;
-  final String fromPhotoUrl;
+  final UserModel fromUser;
   final String from;
-  final String toFullName;
-  final String toPhotoUrl;
+  final UserModel toUser;
   final String to;
   final String message;
   final DateTime createdAt;
   final DateTime updatedAt;
   const ChatModel({
-    this.toPhotoUrl = '',
-    this.fromPhotoUrl = '',
     required this.chatId,
-    required this.fromFullName,
+    required this.fromUser,
     required this.from,
-    required this.toFullName,
+    required this.toUser,
     required this.to,
     required this.message,
     required this.createdAt,
@@ -28,9 +25,9 @@ class ChatModel extends Equatable {
   @override
   List<Object?> get props => [
         chatId,
-        fromFullName,
+        fromUser,
         from,
-        toFullName,
+        toUser,
         to,
         message,
         createdAt,

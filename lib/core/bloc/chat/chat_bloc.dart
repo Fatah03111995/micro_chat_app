@@ -3,6 +3,7 @@ import 'package:micro_chat_app/core/models/channel_model.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_state.dart';
+import 'package:micro_chat_app/core/models/user_model.dart';
 import 'package:micro_chat_app/core/services/io_socket_services.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -67,6 +68,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Set<String> setUserFriends = {};
     List<ChannelModel> channels = [];
 
+    //----------- INPUT ALL EMAIL THAT HAVE HISTORY MESSAGE TO USER
     for (final chat in chats) {
       if (chat.from != userEmail) {
         setUserFriends.add(chat.from);
@@ -78,19 +80,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     if (setUserFriends.isNotEmpty) {
       for (final userFriend in setUserFriends) {
-        String friendFullName = '';
-        String friendPhotoUrl = '';
+        UserModel? user;
         List<ChatModel> friendChats = [
           ...chats.where((chat) {
             if (chat.from != userEmail) {
-              friendFullName = chat.fromFullName;
-              friendPhotoUrl = chat.fromPhotoUrl;
+              user = chat.fromUser;
             }
             if (chat.to != userEmail) {
-              friendFullName = chat.toFullName;
-              friendPhotoUrl = chat.toPhotoUrl;
+              user = chat.toUser;
             }
-
             return (chat.from == userFriend && chat.to == userEmail) ||
                 (chat.from == userEmail && chat.to == userFriend);
           })
@@ -98,11 +96,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
         friendChats.sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
-        channels.add(ChannelModel(
-            userEmail: userFriend,
-            fullName: friendFullName,
-            chats: friendChats,
-            photoProfilePath: friendPhotoUrl));
+        channels.add(ChannelModel(user: user!, chats: chats));
       }
       return channels;
     }

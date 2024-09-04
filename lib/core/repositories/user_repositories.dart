@@ -5,9 +5,9 @@ import 'package:micro_chat_app/core/models/user_model.dart';
 import 'package:micro_chat_app/core/util/util_component.dart';
 
 class UserRepositories {
-  static Future<UserModel> getUserById(String userId) async {
+  static Future<UserModel> getUserById(String userId, String userToken) async {
     try {
-      final response = await UserProvider.getUserById(userId);
+      final response = await UserProvider.getUserById(userId, userToken);
       final body = jsonDecode(response.body);
 
       if (response.statusCode != 200) {
@@ -39,9 +39,10 @@ class UserRepositories {
     throw 'error getting use by id';
   }
 
-  static Future<List<UserModel>> getUserByList(List<String> listUsers) async {
+  static Future<List<UserModel>> getUserByList(
+      List<String> listUsers, String userToken) async {
     try {
-      final response = await UserProvider.getUserByList(listUsers);
+      final response = await UserProvider.getUserByList(listUsers, userToken);
       final body = jsonDecode(response.body);
       final List<UserModel> listData = [];
 

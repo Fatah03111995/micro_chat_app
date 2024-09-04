@@ -2,54 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 
-class DarkMode extends MyTheme {
-  DarkMode()
-      : super(
-            primaryColor: MyColors.blue1,
-            secondaryColor: MyColors.dark900,
-            textColor: Colors.white,
-            secondaryTextColor: MyColors.dark900,
-            containerColor: MyColors.dark700,
-            secondaryContainerColor: MyColors.blue4,
-            buttonColor: MyColors.blue1,
-            secondaryButtonColor: MyColors.dark700,
-            scaffoldBgColor: MyColors.dark900);
-}
-
-class LightMode extends MyTheme {
-  LightMode()
-      : super(
-          primaryColor: MyColors.blue1,
-          secondaryColor: MyColors.dark100,
-          textColor: MyColors.dark900,
-          secondaryTextColor: MyColors.dark100,
-          containerColor: Colors.white,
-          secondaryContainerColor: MyColors.blue1,
-          buttonColor: MyColors.blue1,
-          secondaryButtonColor: MyColors.dark100,
-          scaffoldBgColor: MyColors.blue4,
-        );
-}
-
-abstract class MyTheme {
-  final Color primaryColor;
-  final Color secondaryColor;
-  final Color textColor;
-  final Color secondaryTextColor;
-  final Color containerColor;
-  final Color secondaryContainerColor;
-  final Color buttonColor;
-  final Color secondaryButtonColor;
-  final Color scaffoldBgColor;
-  const MyTheme({
-    required this.primaryColor,
-    required this.secondaryColor,
-    required this.textColor,
-    required this.secondaryTextColor,
-    required this.containerColor,
-    required this.secondaryContainerColor,
-    required this.buttonColor,
-    required this.secondaryButtonColor,
-    required this.scaffoldBgColor,
-  });
+extension CustomThemeData on ThemeData {
+  Color get primaryColor =>
+      brightness == Brightness.dark ? MyColors.blue1 : MyColors.blue1;
+  Color get secondaryColor =>
+      brightness == Brightness.dark ? MyColors.dark900 : MyColors.dark100;
+  Color get textColor =>
+      brightness == Brightness.dark ? Colors.white : MyColors.dark900;
+  Color get secondaryTextColor =>
+      brightness == Brightness.dark ? MyColors.dark900 : MyColors.dark100;
+  Color get containerColor =>
+      brightness == Brightness.dark ? MyColors.dark700 : Colors.white;
+  Color get buttonColor => MyColors.blue1;
+  Color get secondaryButtonColor =>
+      brightness == Brightness.dark ? MyColors.dark700 : MyColors.dark100;
+  Color get scaffoldBgColor =>
+      brightness == Brightness.dark ? MyColors.dark900 : MyColors.blue4;
 }

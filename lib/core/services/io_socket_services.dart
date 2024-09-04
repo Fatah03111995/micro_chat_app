@@ -2,6 +2,7 @@
 
 import 'package:micro_chat_app/core/env/env.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
+import 'package:micro_chat_app/core/models/user_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class IOSocketServices {
@@ -57,11 +58,23 @@ class IOSocketServices {
       Map<String, dynamic> chatData = data;
       ChatModel newChat = ChatModel(
         chatId: chatData['_id'],
-        fromFullName:
-            '${chatData['senderDetails']['firstName']} ${chatData['senderDetails']['lastName']}',
+        fromUser: UserModel(
+            userId: chatData['senderDetails']['_id'],
+            firstName: chatData['senderDetails']['firstName'],
+            lastName: chatData['senderDetails']['lastName'],
+            userName: chatData['senderDetails']['userName'],
+            email: chatData['senderDetails']['email'],
+            fcmToken: chatData['senderDetails']['fcmToken'],
+            photoProfilePath: chatData['senderDetails']['photoProfilePath']),
         from: chatData['from'],
-        toFullName:
-            '${chatData['receiverDetails']['firstName']} ${chatData['senderDetails']['lastName']}',
+        toUser: UserModel(
+            userId: chatData['receiverDetails']['_id'],
+            firstName: chatData['receiverDetails']['firstName'],
+            lastName: chatData['receiverDetails']['lastName'],
+            userName: chatData['receiverDetails']['userName'],
+            email: chatData['receiverDetails']['email'],
+            fcmToken: chatData['receiverDetails']['fcmToken'],
+            photoProfilePath: chatData['receiverDetails']['photoProfilePath']),
         to: chatData['to'],
         message: chatData['message'],
         createdAt: DateTime.parse(chatData['createdAt'] as String),

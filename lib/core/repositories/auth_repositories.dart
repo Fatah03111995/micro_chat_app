@@ -71,7 +71,7 @@ class ExpressAuth implements AuthRepositories {
       lastName: bodyUser['lastName'],
       userName: bodyUser['userName'],
       email: bodyUser['email'],
-      userToken: bodyToken,
+      userToken: 'Bearer $bodyToken',
       fcmToken: bodyUser['fcmToken'],
       photoProfilePath: bodyUser['photoProfilePath'],
       friends: userFriends,

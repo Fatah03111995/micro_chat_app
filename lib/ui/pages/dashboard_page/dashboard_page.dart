@@ -4,10 +4,10 @@ import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
-import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
+import 'package:micro_chat_app/core/themes/my_themes.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_bloc.dart';
 import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_state.dart';
@@ -19,8 +19,11 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBgColor,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBgColor,
           automaticallyImplyLeading: false,
+          elevation: 0,
           title: Text(
             'Micro Chat',
             style: TextStyles.mlBold.copyWith(color: MyColors.blue1),
@@ -28,11 +31,12 @@ class DashboardPage extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(context, PagePath.login,
+                      (route) {
+                    return false;
+                  });
                   context.read<AuthBloc>().add(AuthEventLogOut());
-                  context.read<UserCubit>().changeData(null);
                   context.read<ChatBloc>().add(Disconnect());
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, PagePath.login, (route) => false);
                 },
                 icon: const Icon(Icons.logout))
           ],

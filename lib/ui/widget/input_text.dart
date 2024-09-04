@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:micro_chat_app/core/themes/my_themes.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 
 class InputText extends StatelessWidget {
@@ -32,18 +33,20 @@ class InputText extends StatelessWidget {
       style: TextStyles.sm,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyles.s,
+        labelStyle: TextStyles.s.copyWith(color: Theme.of(context).textColor),
         hintText: hint,
-        hintStyle: TextStyles.sm.copyWith(color: Colors.black38),
+        hintStyle: TextStyles.sm
+            .copyWith(color: Theme.of(context).textColor.withOpacity(0.5)),
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.w),
-          borderSide: const BorderSide(color: Colors.black38),
+          borderSide:
+              BorderSide(color: Theme.of(context).textColor.withOpacity(0.5)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.w),
-          borderSide: const BorderSide(color: Colors.black),
+          borderSide: BorderSide(color: Theme.of(context).textColor),
         ),
       ),
     );

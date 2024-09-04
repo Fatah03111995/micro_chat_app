@@ -5,17 +5,20 @@ import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_state.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
+import 'package:micro_chat_app/core/env/env.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
+import 'package:micro_chat_app/core/models/user_model.dart';
 import 'package:micro_chat_app/core/repositories/chat_repositories.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
+import 'package:micro_chat_app/core/themes/my_themes.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
 import 'package:micro_chat_app/ui/pages/chat_page/widget/chat_bubble.dart';
 import 'package:micro_chat_app/ui/widget/input_text.dart';
 
 class ChatStreamer extends StatefulWidget {
-  final String friendId;
-  const ChatStreamer({super.key, this.friendId = ''});
+  final UserModel? friend;
+  const ChatStreamer({super.key, this.friend});
 
   @override
   State<ChatStreamer> createState() => _ChatStreamerState();
@@ -38,22 +41,34 @@ class _ChatStreamerState extends State<ChatStreamer> {
 
   @override
   Widget build(BuildContext context) {
+    String userEmail = context.read<UserCubit>().state.user!.email;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBgColor,
         centerTitle: false,
-        elevation: 7,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircleAvatar(
-              child: Assets.person.image(),
+            Container(
+              width: 50.w,
+              height: 50.w,
+              clipBehavior: Clip.hardEdge,
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              child: widget.friend!.photoProfilePath.isEmpty
+                  ? Assets.person.image(fit: BoxFit.cover)
+                  : Image.network(
+                      '${Env.baseEndpoint}${widget.friend!.photoProfilePath}',
+                      fit: BoxFit.cover,
+                    ),
             ),
             SizedBox(width: 10.w),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ahmad',
-                  style: TextStyles.sm,
+                  '${widget.friend!.firstName} ${widget.friend!.lastName}',
+                  style: TextStyles.sm
+                      .copyWith(color: Theme.of(context).textColor),
                 ),
                 SizedBox(height: 5.h),
                 BlocSelector<ChatBloc, ChatState, List<String>>(
@@ -61,11 +76,13 @@ class _ChatStreamerState extends State<ChatStreamer> {
                     return state.onlineUser;
                   },
                   builder: (context, onlinUser) {
-                    bool isOnline = onlinUser.contains(widget.friendId);
+                    bool isOnline = onlinUser.contains(widget.friend!.userId);
                     return Text(
                       isOnline ? 'Online' : 'Offline',
                       style: TextStyles.s.copyWith(
-                          color: isOnline ? MyColors.blue1 : Colors.black54),
+                          color: isOnline
+                              ? MyColors.blue1
+                              : Theme.of(context).textColor),
                     );
                   },
                 )
@@ -83,7 +100,14 @@ class _ChatStreamerState extends State<ChatStreamer> {
                 selector: (state) {
                   return state.chats;
                 },
-                builder: (context, chats) {
+                builder: (context, listChats) {
+                  List<ChatModel> chats = listChats.where((chat) {
+                    return (chat.from == widget.friend!.email &&
+                            chat.to == userEmail) ||
+                        (chat.from == userEmail &&
+                            chat.to == widget.friend!.email);
+                  }).toList();
+
                   WidgetsBinding.instance
                       .addPostFrameCallback((_) => _scrollToBottom);
                   return ListView.builder(
@@ -115,20 +139,22 @@ class _ChatStreamerState extends State<ChatStreamer> {
               width: double.infinity,
               height: 50.h,
               margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-              decoration: const BoxDecoration(color: Colors.white),
               child: InputText(
                 hint: 'your messages...',
                 controller: message,
                 onChanged: (newValue) {},
                 suffixIcon: IconButton(
-                    icon: const Icon(Icons.send),
+                    icon: Icon(
+                      Icons.send,
+                      color: Theme.of(context).textColor,
+                    ),
                     onPressed: () async {
-                      String userEmail =
-                          context.read<UserCubit>().state.user!.email;
                       final response = await ChatRepositories.sendMessage(
                           from: userEmail,
-                          to: 'fatihin@gmail.com',
-                          message: message.text);
+                          to: widget.friend!.email,
+                          message: message.text,
+                          userToken:
+                              context.read<UserCubit>().state.user!.userToken);
                       if (context.mounted) {
                         context
                             .read<ChatBloc>()

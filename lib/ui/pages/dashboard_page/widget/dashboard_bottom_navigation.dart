@@ -56,7 +56,7 @@ class DashboardBottomNavigator extends StatelessWidget {
                           duration: const Duration(milliseconds: 200),
                           height: 2.h,
                           width: 30.w,
-                          margin: EdgeInsets.only(bottom: 7.h),
+                          margin: EdgeInsets.only(bottom: 5.h),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(1.w),
                             color: isChooseIndex
@@ -77,7 +77,7 @@ class DashboardBottomNavigator extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              if (isChooseIndex) SizedBox(height: 3.h),
+                              if (isChooseIndex) SizedBox(height: 2.h),
                               if (isChooseIndex)
                                 Text(
                                   page.title!,

@@ -6,9 +6,12 @@ import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_state.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
+import 'package:micro_chat_app/core/env/env.dart';
 import 'package:micro_chat_app/core/models/channel_model.dart';
 import 'package:micro_chat_app/core/models/chat_model.dart';
+import 'package:micro_chat_app/core/models/user_model.dart';
 import 'package:micro_chat_app/core/repositories/chat_repositories.dart';
+import 'package:micro_chat_app/core/themes/my_themes.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
 import 'package:micro_chat_app/ui/gen/assets.gen.dart';
 import 'package:micro_chat_app/ui/pages/chat_page/chat_streamer.dart';
@@ -28,12 +31,14 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    String userEmail = context.read<UserCubit>().state.user!.email;
-    context.read<ChatBloc>().add(Connect(userEmail: userEmail));
-    context.read<ChatBloc>().userEmail = userEmail;
+    UserModel userState = context.read<UserCubit>().state.user!;
+    print(userState.userToken);
+    context.read<ChatBloc>().userEmail = userState.email;
+    context.read<ChatBloc>().add(Connect(userEmail: userState.email));
 
     return FutureBuilder(
-      future: ChatRepositories.getAllChat(userEmail: userEmail),
+      future: ChatRepositories.getAllChat(
+          userEmail: userState.email, userToken: userState.userToken),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -48,16 +53,23 @@ class _ChatPageState extends State<ChatPage> {
             return state.chats;
           },
           builder: (context, listChats) {
-            return BlocSelector<ChatBloc, ChatState, List<ChannelModel>>(
+            return BlocSelector<ChatBloc, ChatState, List<ChannelModel>?>(
               selector: (state) {
                 return state.channel;
               },
               builder: (context, channels) {
+                if (channels == null) {
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: Theme.of(context).textColor,
+                  ));
+                }
                 if (channels.isEmpty) {
                   return Center(
                     child: Text(
                       'There is no data here',
-                      style: TextStyles.m,
+                      style: TextStyles.m
+                          .copyWith(color: Theme.of(context).textColor),
                     ),
                   );
                 }
@@ -66,16 +78,16 @@ class _ChatPageState extends State<ChatPage> {
                     itemBuilder: (context, index) {
                       final channel = channels[index];
                       final formatDate = DateFormat.jm().format;
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.h),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ChatStreamer()));
-                          },
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ChatStreamer(friend: channel.user)));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,10 +101,12 @@ class _ChatPageState extends State<ChatPage> {
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                     ),
-                                    child: channel.photoProfilePath.isEmpty
+                                    child: channel.user.photoProfilePath.isEmpty
                                         ? Assets.person.image(fit: BoxFit.cover)
-                                        : Assets.person
-                                            .image(fit: BoxFit.cover),
+                                        : Image.network(
+                                            '${Env.baseEndpoint}${channel.user.photoProfilePath}',
+                                            fit: BoxFit.cover,
+                                          ),
                                   ),
                                   SizedBox(width: 10.w),
                                   Column(
@@ -100,13 +114,15 @@ class _ChatPageState extends State<ChatPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        channel.fullName,
-                                        style: TextStyles.mBold,
+                                        '${channel.user.firstName} ${channel.user.lastName}',
+                                        style: TextStyles.mBold.copyWith(
+                                            color: Theme.of(context).textColor),
                                       ),
                                       SizedBox(height: 5.h),
                                       Text(
                                         channel.chats.last.message,
-                                        style: TextStyles.sm,
+                                        style: TextStyles.sm.copyWith(
+                                            color: Theme.of(context).textColor),
                                       )
                                     ],
                                   ),
@@ -114,7 +130,8 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               Text(
                                 formatDate(channel.chats.last.createdAt),
-                                style: TextStyles.sm,
+                                style: TextStyles.sm.copyWith(
+                                    color: Theme.of(context).textColor),
                               )
                             ],
                           ),

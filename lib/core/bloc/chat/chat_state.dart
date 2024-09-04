@@ -7,11 +7,11 @@ import 'package:micro_chat_app/core/models/chat_model.dart';
 class ChatState extends Equatable {
   final List<String> onlineUser;
   final List<ChatModel> chats;
-  final List<ChannelModel> channel;
+  final List<ChannelModel>? channel;
   const ChatState({
     this.onlineUser = const [],
     this.chats = const [],
-    this.channel = const [],
+    this.channel,
   });
 
   @override
