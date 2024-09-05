@@ -21,8 +21,11 @@ class IOSocketServices {
     print('Connecting to socket...');
     _socket = io.io(
       Env.baseEndpoint,
-      io.OptionBuilder().setTransports(['websocket']).setQuery(
-          {'userEmail': userEmail}).build(),
+      io.OptionBuilder()
+          .setTransports(['websocket'])
+          .disableAutoConnect()
+          .setQuery({'userEmail': userEmail})
+          .build(),
     );
 
     // Pastikan untuk mendengarkan event connect
@@ -43,6 +46,10 @@ class IOSocketServices {
     _socket!.on('test', (data) {
       print(data);
     });
+  }
+
+  void startConnect() {
+    _socket!.connect();
   }
 
   void getOnlineUsers(Function(List<String>) cb) {

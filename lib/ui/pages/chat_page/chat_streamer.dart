@@ -76,7 +76,7 @@ class _ChatStreamerState extends State<ChatStreamer> {
                     return state.onlineUser;
                   },
                   builder: (context, onlinUser) {
-                    bool isOnline = onlinUser.contains(widget.friend!.userId);
+                    bool isOnline = onlinUser.contains(widget.friend!.email);
                     return Text(
                       isOnline ? 'Online' : 'Offline',
                       style: TextStyles.s.copyWith(

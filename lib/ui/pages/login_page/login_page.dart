@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_bloc.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_event.dart';
 import 'package:micro_chat_app/core/bloc/auth/auth_state.dart';
+import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
+import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
 import 'package:micro_chat_app/core/bloc/user/user_cubit.dart';
 import 'package:micro_chat_app/core/repositories/auth_repositories.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
@@ -24,6 +26,9 @@ class LoginPage extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, authState) {
         if (authState is AuthStateSuccess) {
+          context
+              .read<ChatBloc>()
+              .add(Connect(userEmail: authState.user.email));
           context.read<UserCubit>().changeData(authState.user);
           Navigator.pushNamedAndRemoveUntil(
               context, PagePath.dashboard, (route) => false);

@@ -30,7 +30,7 @@ class InputText extends StatelessWidget {
       controller: controller,
       onChanged: onChanged,
       obscureText: isNotVisible,
-      style: TextStyles.sm,
+      style: TextStyles.sm.copyWith(color: Theme.of(context).textColor),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyles.s.copyWith(color: Theme.of(context).textColor),

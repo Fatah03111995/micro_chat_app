@@ -6,6 +6,7 @@ import 'package:micro_chat_app/core/bloc/chat/chat_bloc.dart';
 import 'package:micro_chat_app/core/bloc/chat/chat_event.dart';
 import 'package:micro_chat_app/core/router/app_routes.dart';
 import 'package:micro_chat_app/core/router/page_path.dart';
+import 'package:micro_chat_app/core/services/io_socket_services.dart';
 import 'package:micro_chat_app/core/themes/my_colors.dart';
 import 'package:micro_chat_app/core/themes/my_themes.dart';
 import 'package:micro_chat_app/core/themes/text_styles.dart';
@@ -18,6 +19,7 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    IOSocketServices().startConnect();
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBgColor,
         appBar: AppBar(
