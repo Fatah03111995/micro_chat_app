@@ -19,7 +19,9 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //-----------------EVERYTIME DASHBOARD PAGE IS CALLED, START CONNECTION
     IOSocketServices().startConnect();
+
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBgColor,
         appBar: AppBar(
@@ -46,6 +48,8 @@ class DashboardPage extends StatelessWidget {
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+
+            //-------------------------MAIN CONTENT IS BASED ON THE CHOOSEN INDEX ICON IN BOTTOM NAVBAR
             child: BlocSelector<DashboardBloc, DashboardState, int>(
               selector: (state) {
                 return state.indexPage;

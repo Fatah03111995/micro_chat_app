@@ -49,6 +49,8 @@ class LoginPage extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
                 SizedBox(height: 30.h),
+
+                //-------------------INPUT EMAIL
                 InputText(
                     prefixIcon: const Icon(Icons.email),
                     label: 'email',
@@ -59,6 +61,8 @@ class LoginPage extends StatelessWidget {
                           .add(LoginEmailEvent(newValueEmail: newVal));
                     }),
                 SizedBox(height: 10.h),
+
+                //-------------------INPUT PASSWORD
                 BlocSelector<LoginBloc, LoginState, bool>(
                   selector: (state) {
                     return state.isPassNotVisible;
@@ -98,33 +102,34 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 30.h),
-                BlocListener<AuthBloc, AuthState>(
-                  listener: (context, state) {},
-                  child: RoundedRectangleButton(
-                      onTap: () {
-                        final LoginState loginState =
-                            context.read<LoginBloc>().state;
-                        context.read<AuthBloc>().add(AuthEventLogIn(
-                              authRepositories: ExpressAuth(),
-                              email: loginState.email,
-                              password: loginState.password,
-                            ));
+
+                //------------------------BUTTON LOGIN
+                RoundedRectangleButton(
+                    onTap: () {
+                      final LoginState loginState =
+                          context.read<LoginBloc>().state;
+                      context.read<AuthBloc>().add(AuthEventLogIn(
+                            authRepositories: ExpressAuth(),
+                            email: loginState.email,
+                            password: loginState.password,
+                          ));
+                    },
+                    color: MyColors.blue1,
+                    child: BlocSelector<AuthBloc, AuthState, AuthState>(
+                      selector: (state) {
+                        return state;
                       },
-                      color: MyColors.blue1,
-                      child: BlocSelector<AuthBloc, AuthState, AuthState>(
-                        selector: (state) {
-                          return state;
-                        },
-                        builder: (context, state) {
-                          return state is AuthStateLoading
-                              ? const CircularProgressIndicator()
-                              : Text('Login',
-                                  style: TextStyles.sm
-                                      .copyWith(color: Colors.white));
-                        },
-                      )),
-                ),
+                      builder: (context, state) {
+                        return state is AuthStateLoading
+                            ? const CircularProgressIndicator()
+                            : Text('Login',
+                                style: TextStyles.sm
+                                    .copyWith(color: Colors.white));
+                      },
+                    )),
                 SizedBox(height: 20.h),
+
+                //---------------------------BUTTON REGISTER
                 RoundedRectangleButton(
                     onTap: () {
                       Navigator.pushNamed(context, PagePath.register);

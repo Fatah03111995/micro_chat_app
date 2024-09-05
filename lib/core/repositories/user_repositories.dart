@@ -39,6 +39,7 @@ class UserRepositories {
     throw 'error getting use by id';
   }
 
+  //----------------------YOU CAN REQUEST USER IN LIST(EX. LIST FRIEND, LIST SEARCH PERSON)
   static Future<List<UserModel>> getUserByList(
       List<String> listUsers, String userToken) async {
     try {
@@ -51,10 +52,12 @@ class UserRepositories {
       }
 
       if (body.isNotEmpty) {
+        //---------------DATA THAT RECEIVE IN JSON, ALWAYS List<Dynamics> or Map<String, dynamic>
         final List<dynamic> rawBody = body;
         final List<Map<String, dynamic>> listRawData =
             rawBody.map((el) => el as Map<String, dynamic>).toList();
 
+        //---------------LOOPING, CHANGE EVERY ITEM FROM Map<String, dynamic> to UserModel
         for (final rawData in listRawData) {
           final List<dynamic> rawUserFriends = rawData['userFriends'] ?? [];
           final UserModel user = UserModel(
@@ -69,6 +72,8 @@ class UserRepositories {
           );
           listData.add(user);
         }
+
+        //--------------SUMMERIZE
         return listData;
       }
     } catch (e) {

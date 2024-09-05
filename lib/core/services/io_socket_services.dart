@@ -11,10 +11,13 @@ class IOSocketServices {
   static IOSocketServices? _instance;
 
   factory IOSocketServices() {
+    //------------EVERYTIME INSTANCE CALL, WILL CHECK IS THERE ANY _INSTANCE ?
+    //------------IF TRUE, RETURN PREVIOUS _INSTANCE, DON'T CALL NEW ONES
     _instance ??= IOSocketServices._();
     return _instance!;
   }
 
+  //---------PRIVATE CONSTRUCTOR
   IOSocketServices._();
 
   void connect({required String userEmail}) {

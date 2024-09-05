@@ -32,7 +32,6 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     UserModel userState = context.read<UserCubit>().state.user!;
-    print(userState.userToken);
     context.read<ChatBloc>().userEmail = userState.email;
     context.read<ChatBloc>().add(Connect(userEmail: userState.email));
 

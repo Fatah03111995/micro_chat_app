@@ -9,6 +9,7 @@ class ChatProvider {
       required String to,
       required String message,
       required String userToken}) async {
+    ///[NEXT] --------------CHECK INTERNET CONNECTION FIRST, THROW ERROR IF THERE IS NO CONNECTION
     Uri url = Uri.parse('${Env.baseEndpoint}/chat');
     final Map<String, String> data = {
       'from': from,
@@ -26,6 +27,7 @@ class ChatProvider {
 
   static Future<http.Response> getMessages(
       {required String userEmail, required String userToken}) async {
+    ///[NEXT] --------------CHECK INTERNET CONNECTION FIRST, THROW ERROR IF THERE IS NO CONNECTION
     Uri url = Uri.parse('${Env.baseEndpoint}/chat/$userEmail');
     http.Response response = await http.get(url, headers: {
       'Authorization': userToken,

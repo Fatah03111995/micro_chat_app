@@ -13,7 +13,9 @@ import 'package:micro_chat_app/ui/pages/dashboard_page/bloc/dashboard_bloc.dart'
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // Bloc.observer = AppObserver();
+  // Bloc.observer = AppObserver(); // --------------- WAS USED IN DEVELOPMENT ONLY
+
+//----------------------MULTIBLOCPROVIDER WAS PLACED IN THE HIGHEST PLACE IN THE TREE WIDGET
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
@@ -44,6 +46,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+
     return ScreenUtilInit(
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {

@@ -10,6 +10,7 @@ class AuthDataProvider {
     required String email,
     required String password,
   }) async {
+    ///[NEXT] --------------CHECK INTERNET CONNECTION FIRST, THROW ERROR IF THERE IS NO CONNECTION
     final Map<String, String> data = {
       "email": email,
       "password": password,
@@ -30,6 +31,7 @@ class AuthDataProvider {
     required String fcmToken,
     required File photoProfilePath,
   }) async {
+    ///[NEXT] --------------CHECK INTERNET CONNECTION FIRST, THROW ERROR IF THERE IS NO CONNECTION
     final url = Uri.parse('${Env.baseEndpoint}/auth/register');
     final request = http.MultipartRequest('POST', url);
     request.files.add(http.MultipartFile(

@@ -63,10 +63,16 @@ class AppRoutes {
   static Route onGenerateRoute(RouteSettings setting) {
     List<PageEntity> page = getPageEntity(setting.name ?? '');
     List<PageEntity> defaultPage = getPageEntity(PagePath.login);
+
+    ///[NEXT] bool isLogin = Preferences.getIslogin();
+    ///[NEXT] If(isLogin){ if true, first page is DASHBOARD PAGE, if false LOGIN PAGE }
+
+    //--------------KNOWN PATH
     if (page.isNotEmpty) {
       return MaterialPageRoute(builder: (context) => page.first.page);
     }
 
+    //---------------UNKNOWN PATH
     return MaterialPageRoute(builder: (context) => defaultPage.first.page);
   }
 }

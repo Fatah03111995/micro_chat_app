@@ -25,7 +25,7 @@ class ChatStreamer extends StatefulWidget {
 }
 
 class _ChatStreamerState extends State<ChatStreamer> {
-  final TextEditingController message = TextEditingController();
+  final TextEditingController _message = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   void _scrollToBottom() {
@@ -35,7 +35,8 @@ class _ChatStreamerState extends State<ChatStreamer> {
 
   @override
   void dispose() {
-    message.dispose();
+    _message.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -49,6 +50,7 @@ class _ChatStreamerState extends State<ChatStreamer> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            //------------------------USERS FRIEND PHOTO PROFILE
             Container(
               width: 50.w,
               height: 50.w,
@@ -62,6 +64,8 @@ class _ChatStreamerState extends State<ChatStreamer> {
                     ),
             ),
             SizedBox(width: 10.w),
+
+            //----------------------NAME
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -71,6 +75,8 @@ class _ChatStreamerState extends State<ChatStreamer> {
                       .copyWith(color: Theme.of(context).textColor),
                 ),
                 SizedBox(height: 5.h),
+
+                //-----------------------ONLINE STATUS
                 BlocSelector<ChatBloc, ChatState, List<String>>(
                   selector: (state) {
                     return state.onlineUser;
@@ -141,7 +147,7 @@ class _ChatStreamerState extends State<ChatStreamer> {
               margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
               child: InputText(
                 hint: 'your messages...',
-                controller: message,
+                controller: _message,
                 onChanged: (newValue) {},
                 suffixIcon: IconButton(
                     icon: Icon(
@@ -152,7 +158,7 @@ class _ChatStreamerState extends State<ChatStreamer> {
                       final response = await ChatRepositories.sendMessage(
                           from: userEmail,
                           to: widget.friend!.email,
-                          message: message.text,
+                          message: _message.text,
                           userToken:
                               context.read<UserCubit>().state.user!.userToken);
                       if (context.mounted) {
@@ -160,7 +166,7 @@ class _ChatStreamerState extends State<ChatStreamer> {
                             .read<ChatBloc>()
                             .add(NewChat(newChat: response));
                       }
-                      message.clear();
+                      _message.clear();
                     }),
               ),
             )

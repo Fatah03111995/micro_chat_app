@@ -19,12 +19,15 @@ class FriendsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        ///[NEXT]--------------- ADD FRIEND, TO SEARCH PERSON THAT IS NOT BECOME USER FRIEND YET.
         InputText(
           hint: 'Search Name or Username',
           onChanged: (newValue) {},
           suffixIcon: const Icon(Icons.search),
         ),
         SizedBox(height: 30.h),
+
+        //--------------------- LISTEN AND UPDATE FRIEND LIST
         BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             return FutureBuilder(
@@ -47,6 +50,7 @@ class FriendsPage extends StatelessWidget {
                     ),
                   );
                 }
+
                 return Expanded(
                   child: ListView.builder(
                       itemCount: friends.length,
@@ -98,6 +102,9 @@ class FriendsPage extends StatelessWidget {
                                     },
                                   ),
                                   SizedBox(width: 10.w),
+
+                                  ///[NEXT]--------------ADD REMOVE FUNCTION, UPDATE FUNCTION
+                                  ///[NEXT]--------------UPDATE IN UI(UserCubit), UPDATE IN BACK END
                                   const Icon(Icons.person_remove),
                                 ],
                               )
