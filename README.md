@@ -13,7 +13,8 @@ Here i want to share you chat app. You can chatting and get online status with a
 
 ▶️ Socket.IO for realtime interaction feature
 
-light mode
+
+light mode 
 
 ![image](https://github.com/user-attachments/assets/17099e55-b98b-4b0b-b8c9-b30def0fc90b)
 ![image](https://github.com/user-attachments/assets/c4868c94-e98a-4211-b312-c9ad20789427)
